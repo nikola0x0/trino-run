@@ -157,7 +157,7 @@ export class ObstacleManager {
       const body = obstacle.body as Phaser.Physics.Arcade.Body;
       body.setVelocityX(-this.scrollSpeed);
       body.setAllowGravity(false); // Disable gravity for obstacles
-      body.setSize(40, 50); // Adjust collision box size
+      body.setSize(30, 40); // Smaller hitbox for more forgiving gameplay
     }
   }
 
@@ -185,9 +185,9 @@ export class ObstacleManager {
       body.setVelocityX(-this.scrollSpeed);
       body.setAllowGravity(false); // Disable gravity for obstacles
       
-      // Much larger base collision box that scales properly with visual size
-      const baseWidth = 800; // Much larger base size
-      const baseHeight = 400; // Much larger base size
+      // Smaller collision box that scales properly with visual size
+      const baseWidth = 600; // Reduced base size for more forgiving gameplay
+      const baseHeight = 300; // Reduced base size for more forgiving gameplay
       body.setSize(baseWidth * randomScale, baseHeight * randomScale);
     }
   }
@@ -240,7 +240,7 @@ export class ObstacleManager {
         const body = obstacle.body as Phaser.Physics.Arcade.Body;
         body.setVelocityX(-this.scrollSpeed);
         body.setAllowGravity(false);
-        body.setSize(40, 50);
+        body.setSize(30, 40); // Smaller hitbox for more forgiving gameplay
       }
     }
   }
@@ -299,8 +299,8 @@ export class ObstacleManager {
         body.setVelocityX(-this.scrollSpeed);
         body.setAllowGravity(false);
         
-        const baseWidth = 800;
-        const baseHeight = 400;
+        const baseWidth = 600; // Reduced base size for more forgiving gameplay
+        const baseHeight = 300; // Reduced base size for more forgiving gameplay
         body.setSize(baseWidth * randomScale, baseHeight * randomScale);
       }
     }

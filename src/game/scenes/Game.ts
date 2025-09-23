@@ -236,7 +236,7 @@ export class Game extends Scene {
     body.setCollideWorldBounds(true);
     body.setGravityY(-1000); // Counteract world gravity
     body.setAllowGravity(false); // Start with no gravity
-    body.setSize(20, 20); // Adjust collision box
+    body.setSize(16, 20); // Smaller width for more forgiving gameplay
 
     // Use the same fixed position everywhere
     this.dinoGroundY = groundPosition;
@@ -479,7 +479,7 @@ export class Game extends Scene {
         this.player.setScale(2.5); // Bigger dino
         this.player.setOrigin(0.5, 1); // Bottom center origin
         body.setAllowGravity(false);
-        body.setSize(20, 22);
+        body.setSize(16, 22); // Smaller width for more forgiving gameplay
         
         // Hide mole claw effect
         this.moleClawEffect.setVisible(false);
@@ -491,7 +491,7 @@ export class Game extends Scene {
         this.player.setScale(2);
         this.player.setOrigin(0.5, 0.5); // Center origin for flying
         body.setAllowGravity(false);
-        body.setSize(28, 18);
+        body.setSize(24, 16); // Smaller hitbox for more forgiving gameplay
         
         // Hide mole claw effect
         this.moleClawEffect.setVisible(false);
@@ -502,7 +502,7 @@ export class Game extends Scene {
         this.player.setScale(0.12); // Slightly smaller scale for mole
         this.player.setOrigin(0.5, 0.5); // Center origin for underground
         body.setAllowGravity(false);
-        body.setSize(200, 100); // Very large collision box for mole
+        body.setSize(250, 100); // Wider collision box for mole
         
         // Show and position mole claw effect
         this.moleClawEffect.setVisible(true);
@@ -634,11 +634,8 @@ export class Game extends Scene {
       // Dino collides with ground obstacles based on actual position
       return Math.abs(obstacleY - GROUND_Y) < 30 && Math.abs(this.player.y - obstacleY) < 40;
     } else if (this.currentForm === "eagle") {
-      // Eagle collides with sky obstacles at similar Y position
-      return (
-        Math.abs(obstacleY - SKY_Y) < 30 &&
-        Math.abs(this.player.y - obstacleY) < 40
-      );
+      // Eagle collides with sky obstacles based on its current position
+      return Math.abs(this.player.y - obstacleY) < 40;
     } else if (this.currentForm === "mole") {
       // Mole collides with underground obstacles at exact lane position
       return Math.abs(obstacleY - this.player.y) < 30;
