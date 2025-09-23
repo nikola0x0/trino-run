@@ -29,9 +29,10 @@ export class Preloader extends Scene {
     //  Load the assets for the game
     this.load.setPath("assets");
 
-    // Load tilesets for environment
-    this.load.image("tilemap", "tilesets/Tilemap/tilemap.png");
-    this.load.image("tilemap-backgrounds", "tilesets/Tilemap/tilemap-backgrounds.png");
+    // Load game tiles for lanes
+    this.load.image("ground-tile", "tilesets/game_tiles/ground.png");
+    this.load.image("dirt-tile", "tilesets/game_tiles/dirt.png");
+    this.load.image("sky-tile", "tilesets/game_tiles/sky.png");
 
     // Load player sprites
     this.load.spritesheet("dino", "players/24x24_dino_1row_24col.png", {
@@ -45,6 +46,30 @@ export class Preloader extends Scene {
     });
 
     this.load.image("mole", "players/mole.png");
+    
+    // Load checkpoint indicator
+    this.load.image("checkpoint", "players/checkpoint.png");
+    
+    // Load form avatars for UI
+    this.load.image("dino_avatar", "players/dino_avt.png");
+    this.load.image("eagle_avatar", "players/eagle_avt.png");
+    this.load.image("mole_avatar", "players/mole_avt.png");
+    
+    // Load form-switching animation
+    this.load.image("fx001_01", "anims/FX001/FX001_01.png");
+    this.load.image("fx001_02", "anims/FX001/FX001_02.png");
+    this.load.image("fx001_03", "anims/FX001/FX001_03.png");
+    this.load.image("fx001_04", "anims/FX001/FX001_04.png");
+    this.load.image("fx001_05", "anims/FX001/FX001_05.png");
+    
+    // Load mole claw animation
+    this.load.image("fx045_01", "anims/FX045_nyknck/FX45_01.png");
+    this.load.image("fx045_02", "anims/FX045_nyknck/FX45_02.png");
+    this.load.image("fx045_03", "anims/FX045_nyknck/FX45_03.png");
+    this.load.image("fx045_04", "anims/FX045_nyknck/FX45_04.png");
+    this.load.image("fx045_05", "anims/FX045_nyknck/FX45_05.png");
+    this.load.image("fx045_06", "anims/FX045_nyknck/FX45_06.png");
+    this.load.image("fx045_07", "anims/FX045_nyknck/FX45_07.png");
 
     // Load obstacle sprites
     this.load.spritesheet("cacti", "obstacles/64x64_cacti_9col_2row.png", {

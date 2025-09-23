@@ -44,7 +44,7 @@ export class MainMenu extends Scene {
 
     // Add start prompt using PixelifySans font
     const startText = this.add
-      .text(GAME_WIDTH / 2, 550, "CLICK TO START", {
+      .text(GAME_WIDTH / 2, 550, "PRESS ANY KEY TO START", {
         fontFamily: "PixelifySans, Arial Black",
         fontSize: 32,
         color: "#000000",
@@ -63,7 +63,11 @@ export class MainMenu extends Scene {
       repeat: -1,
     });
 
-    // Start game on click
+    // Start game on any key press or click
+    this.input.keyboard?.on("keydown", () => {
+      this.scene.start("Game");
+    });
+    
     this.input.once("pointerdown", () => {
       this.scene.start("Game");
     });

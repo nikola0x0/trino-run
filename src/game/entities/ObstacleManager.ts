@@ -1,5 +1,5 @@
 import { Scene, GameObjects } from "phaser";
-import { GAME_WIDTH, GROUND_Y, SKY_Y, MOLE_LANES } from "../utils/Constants";
+import { GAME_WIDTH, GROUND_Y, MOLE_LANES, LANE_HEIGHT } from "../utils/Constants";
 
 export class ObstacleManager {
   private scene: Scene;
@@ -52,41 +52,90 @@ export class ObstacleManager {
   }
 
   private spawnObstacle() {
-    // Randomly decide which lane(s) to spawn obstacles in
-    const lanes = ["ground", "sky", "underground"];
-    const selectedLanes: string[] = [];
-
-    // 50% chance for single lane, 40% for two lanes, 10% for all three
     const random = Math.random();
-    if (random < 0.5) {
-      selectedLanes.push(lanes[Math.floor(Math.random() * lanes.length)]);
-    } else if (random < 0.9) {
-      // Pick two different lanes
-      const lane1 = lanes[Math.floor(Math.random() * lanes.length)];
-      let lane2 = lanes[Math.floor(Math.random() * lanes.length)];
-      while (lane2 === lane1) {
-        lane2 = lanes[Math.floor(Math.random() * lanes.length)];
-      }
-      selectedLanes.push(lane1, lane2);
-    } else {
-      // Spawn in all three lanes (forces player to switch)
-      selectedLanes.push(...lanes);
+    
+    // 30% - Single obstacles
+    if (random < 0.3) {
+      this.spawnSingleObstacles();
     }
+    // 40% - Formation patterns (rows, forced positioning)
+    else if (random < 0.7) {
+      this.spawnFormationPattern();
+    }
+    // 30% - Multi-lane chaos
+    else {
+      this.spawnChaosPattern();
+    }
+  }
 
-    // Spawn obstacles in selected lanes
-    selectedLanes.forEach((lane) => {
-      switch (lane) {
-        case "ground":
-          this.spawnGroundObstacle();
-          break;
-        case "sky":
-          this.spawnSkyObstacle();
-          break;
-        case "underground":
-          this.spawnUndergroundObstacle();
-          break;
-      }
-    });
+  private spawnSingleObstacles() {
+    const lanes = ["ground", "sky", "underground"];
+    const lane = lanes[Math.floor(Math.random() * lanes.length)];
+    
+    switch (lane) {
+      case "ground":
+        this.spawnGroundObstacle();
+        break;
+      case "sky":
+        this.spawnSkyObstacle();
+        break;
+      case "underground":
+        this.spawnUndergroundObstacle();
+        break;
+    }
+  }
+
+  private spawnFormationPattern() {
+    const patterns = [
+      "ground_row",
+      "underground_forced",
+      "sky_formation",
+      "vertical_wall"
+    ];
+    
+    const pattern = patterns[Math.floor(Math.random() * patterns.length)];
+    
+    switch (pattern) {
+      case "ground_row":
+        // Row of 2-3 cacti
+        this.spawnGroundRow();
+        break;
+      case "underground_forced":
+        // Block 2 of 3 underground lanes, forcing player to specific lane
+        this.spawnUndergroundForced();
+        break;
+      case "sky_formation":
+        // Multiple sky obstacles at different heights
+        this.spawnSkyFormation();
+        break;
+      case "vertical_wall":
+        // Obstacles in 2-3 lanes at same time
+        this.spawnVerticalWall();
+        break;
+    }
+  }
+
+  private spawnChaosPattern() {
+    // Spawn in multiple lanes with slight delays for challenge
+    const lanes = ["ground", "sky", "underground"];
+    const numLanes = 2 + Math.floor(Math.random() * 2); // 2 or 3 lanes
+    
+    for (let i = 0; i < numLanes; i++) {
+      const lane = lanes[i];
+      setTimeout(() => {
+        switch (lane) {
+          case "ground":
+            this.spawnGroundObstacle();
+            break;
+          case "sky":
+            this.spawnSkyObstacle();
+            break;
+          case "underground":
+            this.spawnUndergroundObstacle();
+            break;
+        }
+      }, i * 200); // Slight delay between spawns
+    }
   }
 
   private spawnGroundObstacle() {
@@ -113,7 +162,12 @@ export class ObstacleManager {
   }
 
   private spawnSkyObstacle() {
-    const obstacle = this.skyObstacles.get(GAME_WIDTH + 50, SKY_Y);
+    // Random Y position within the sky lane (with some padding from edges)
+    const skyLaneTop = 20; // Top padding
+    const skyLaneBottom = LANE_HEIGHT - 20; // Bottom of sky lane with padding
+    const randomY = skyLaneTop + Math.random() * (skyLaneBottom - skyLaneTop);
+    
+    const obstacle = this.skyObstacles.get(GAME_WIDTH + 50, randomY);
     if (obstacle) {
       obstacle.setActive(true);
       obstacle.setVisible(true);
@@ -122,12 +176,19 @@ export class ObstacleManager {
       // Set origin to center for flying objects
       const sprite = obstacle as Phaser.GameObjects.Sprite;
       sprite.setOrigin(0.5, 0.5);
-      sprite.setScale(0.15); // Scale down jet to appropriate size
+      
+      // Random size scaling for variety (between 0.15 and 0.4 for better visibility)
+      const randomScale = 0.15 + Math.random() * 0.25;
+      sprite.setScale(randomScale);
 
       const body = obstacle.body as Phaser.Physics.Arcade.Body;
       body.setVelocityX(-this.scrollSpeed);
       body.setAllowGravity(false); // Disable gravity for obstacles
-      body.setSize(200, 100); // Adjust collision box for jet
+      
+      // Much larger base collision box that scales properly with visual size
+      const baseWidth = 800; // Much larger base size
+      const baseHeight = 400; // Much larger base size
+      body.setSize(baseWidth * randomScale, baseHeight * randomScale);
     }
   }
 
@@ -158,6 +219,100 @@ export class ObstacleManager {
       body.setAllowGravity(false); // Disable gravity for obstacles
       body.setSize(20, 20); // Adjust collision box for rocks
     }
+  }
+
+  // Formation patterns
+  private spawnGroundRow() {
+    // Spawn 2-3 cacti in a row with spacing
+    const numCacti = 2 + Math.floor(Math.random() * 2); // 2 or 3
+    for (let i = 0; i < numCacti; i++) {
+      const obstacle = this.groundObstacles.get(GAME_WIDTH + 50 + (i * 80), GROUND_Y + 8);
+      if (obstacle) {
+        obstacle.setActive(true);
+        obstacle.setVisible(true);
+        
+        const sprite = obstacle as Phaser.GameObjects.Sprite;
+        sprite.setOrigin(0.5, 1);
+        
+        const bigCactiFrames = [0, 1, 7, 8, 9, 10, 16, 17];
+        obstacle.setFrame(bigCactiFrames[Math.floor(Math.random() * bigCactiFrames.length)]);
+
+        const body = obstacle.body as Phaser.Physics.Arcade.Body;
+        body.setVelocityX(-this.scrollSpeed);
+        body.setAllowGravity(false);
+        body.setSize(40, 50);
+      }
+    }
+  }
+
+  private spawnUndergroundForced() {
+    // Block 2 of 3 lanes, forcing player to the remaining one
+    const lanes = ["TOP", "MIDDLE", "BOTTOM"];
+    const safeLane = Math.floor(Math.random() * 3);
+    
+    for (let i = 0; i < 3; i++) {
+      if (i !== safeLane) {
+        const lane = lanes[i] as keyof typeof MOLE_LANES;
+        const yPos = MOLE_LANES[lane];
+
+        const obstacle = this.undergroundObstacles.get(GAME_WIDTH + 50, yPos);
+        if (obstacle) {
+          obstacle.setActive(true);
+          obstacle.setVisible(true);
+          obstacle.clearTint();
+          
+          const sprite = obstacle as Phaser.GameObjects.Sprite;
+          sprite.setOrigin(0.5, 0.5);
+          sprite.setScale(2.5); // Bigger rocks for forced positioning
+          obstacle.setFrame(Math.floor(Math.random() * 6));
+
+          const body = obstacle.body as Phaser.Physics.Arcade.Body;
+          body.setVelocityX(-this.scrollSpeed);
+          body.setAllowGravity(false);
+          body.setSize(25, 25);
+        }
+      }
+    }
+  }
+
+  private spawnSkyFormation() {
+    // Spawn 2-4 jets at different heights within sky lane
+    const numJets = 2 + Math.floor(Math.random() * 3); // 2-4
+    for (let i = 0; i < numJets; i++) {
+      const skyLaneTop = 20;
+      const skyLaneBottom = LANE_HEIGHT - 20;
+      const randomY = skyLaneTop + Math.random() * (skyLaneBottom - skyLaneTop);
+      
+      const obstacle = this.skyObstacles.get(GAME_WIDTH + 50 + (i * 100), randomY);
+      if (obstacle) {
+        obstacle.setActive(true);
+        obstacle.setVisible(true);
+        obstacle.clearTint();
+        
+        const sprite = obstacle as Phaser.GameObjects.Sprite;
+        sprite.setOrigin(0.5, 0.5);
+        
+        const randomScale = 0.15 + Math.random() * 0.25;
+        sprite.setScale(randomScale);
+
+        const body = obstacle.body as Phaser.Physics.Arcade.Body;
+        body.setVelocityX(-this.scrollSpeed);
+        body.setAllowGravity(false);
+        
+        const baseWidth = 800;
+        const baseHeight = 400;
+        body.setSize(baseWidth * randomScale, baseHeight * randomScale);
+      }
+    }
+  }
+
+  private spawnVerticalWall() {
+    // Spawn obstacles in 2-3 different lanes at the same X position
+    const numLanes = 2 + Math.floor(Math.random() * 2); // 2 or 3
+    
+    if (numLanes >= 1) this.spawnGroundObstacle();
+    if (numLanes >= 2) this.spawnSkyObstacle();
+    if (numLanes >= 3) this.spawnUndergroundObstacle();
   }
 
   private moveObstacles(_delta: number) {
@@ -221,6 +376,10 @@ export class ObstacleManager {
 
   getUndergroundObstacles(): GameObjects.Group {
     return this.undergroundObstacles;
+  }
+
+  getCurrentScrollSpeed(): number {
+    return this.scrollSpeed;
   }
 
   reset() {
