@@ -27,7 +27,6 @@ The goal is to **survive as long as possible** while chaining smart morphs for h
 **Dino (ground)**
 
 - **Space / Up** → Jump
-- **Down** → Crouch (short duck window, e.g., 350 ms)
 
 **Eagle (sky)**
 

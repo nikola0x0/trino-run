@@ -1,32 +1,71 @@
-import { Scene, GameObjects } from 'phaser';
+import { Scene } from "phaser";
+import { GAME_WIDTH } from "../utils/Constants";
 
-export class MainMenu extends Scene
-{
-    background: GameObjects.Image;
-    logo: GameObjects.Image;
-    title: GameObjects.Text;
+export class MainMenu extends Scene {
+  constructor() {
+    super("MainMenu");
+  }
 
-    constructor ()
-    {
-        super('MainMenu');
-    }
+  create() {
+    // Set white background for retro monochrome style
+    this.cameras.main.setBackgroundColor("#ffffff");
 
-    create ()
-    {
-        this.background = this.add.image(512, 384, 'background');
+    // Add logo at the top (moved down to prevent cutoff)
+    const logo = this.add.image(GAME_WIDTH / 2, 200, "logo");
+    logo.setOrigin(0.5);
+    logo.setScale(1.0); // Full size since it's the main focal point
 
-        this.logo = this.add.image(512, 300, 'logo');
+    // Add instructions using PixelifySans font
+    this.add
+      .text(GAME_WIDTH / 2, 390, "How to Play:", {
+        fontFamily: "PixelifySans, Arial",
+        fontSize: 24,
+        color: "#000000",
+        align: "center",
+      })
+      .setOrigin(0.5);
 
-        this.title = this.add.text(512, 460, 'Main Menu', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5);
+    const controls = [
+      "← → : Switch Forms",
+      "SPACE/↑ : Jump (Dino)",
+      "↑ ↓ : Move (Eagle) / Switch Lanes (Mole)",
+    ];
 
-        this.input.once('pointerdown', () => {
+    controls.forEach((text, index) => {
+      this.add
+        .text(GAME_WIDTH / 2, 420 + index * 30, text, {
+          fontFamily: "PixelifySans, Arial",
+          fontSize: 18,
+          color: "#666666",
+          align: "center",
+        })
+        .setOrigin(0.5);
+    });
 
-            this.scene.start('Game');
+    // Add start prompt using PixelifySans font
+    const startText = this.add
+      .text(GAME_WIDTH / 2, 550, "CLICK TO START", {
+        fontFamily: "PixelifySans, Arial Black",
+        fontSize: 32,
+        color: "#000000",
+        stroke: "#ffffff",
+        strokeThickness: 3,
+        align: "center",
+      })
+      .setOrigin(0.5);
 
-        });
-    }
+    // Make start text blink
+    this.tweens.add({
+      targets: startText,
+      alpha: 0.3,
+      duration: 700,
+      yoyo: true,
+      repeat: -1,
+    });
+
+    // Start game on click
+    this.input.once("pointerdown", () => {
+      this.scene.start("Game");
+    });
+  }
 }

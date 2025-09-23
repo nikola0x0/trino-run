@@ -9,10 +9,17 @@ import { Preloader } from './scenes/Preloader';
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const config: Phaser.Types.Core.GameConfig = {
     type: AUTO,
-    width: 1024,
-    height: 768,
+    width: 1200,
+    height: 600,
     parent: 'game-container',
-    backgroundColor: '#028af8',
+    backgroundColor: '#f0f0f0',
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { x: 0, y: 1000 },
+            debug: true
+        }
+    },
     scene: [
         Boot,
         Preloader,
