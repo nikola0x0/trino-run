@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { GAME_WIDTH, GAME_HEIGHT } from "../utils/Constants";
 
 export class Preloader extends Scene {
   constructor() {
@@ -6,19 +7,72 @@ export class Preloader extends Scene {
   }
 
   init() {
-    //  We loaded this image in our Boot Scene, so we can display it here
-    this.add.image(512, 384, "background");
+    // Set monochrome background color to match game style
+    this.cameras.main.setBackgroundColor("#f0f0f0");
 
-    //  A simple progress bar. This is the outline of the bar.
-    this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
+    // Game title text in pixel style
+    const titleText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, "TRINO RUN", {
+      fontFamily: "monospace, Arial",
+      fontSize: "48px",
+      color: "#000000",
+      fontStyle: "bold"
+    });
+    titleText.setOrigin(0.5);
 
-    //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-    const bar = this.add.rectangle(512 - 230, 384, 4, 28, 0xffffff);
+    // Subtitle text
+    const subtitleText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, "Loading...", {
+      fontFamily: "monospace, Arial", 
+      fontSize: "20px",
+      color: "#666666"
+    });
+    subtitleText.setOrigin(0.5);
+
+    // Pixel-style progress bar background
+    const barBg = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 20, 320, 24, 0xcccccc);
+    barBg.setStrokeStyle(3, 0x000000);
+
+    // Progress bar container for pixel texture effect
+    const barContainer = this.add.container(GAME_WIDTH / 2 - 158, GAME_HEIGHT / 2 + 20);
+    
+    // Create pixel texture using small rectangles for chunky look
+    const pixelBlocks: Phaser.GameObjects.Rectangle[] = [];
+    const blockWidth = 8; // Each pixel block width
+    const blockHeight = 18;
+    const totalBlocks = Math.floor(312 / blockWidth); // Total number of blocks
+    
+    for (let i = 0; i < totalBlocks; i++) {
+      const block = this.add.rectangle(i * blockWidth, 0, blockWidth - 1, blockHeight, 0x333333);
+      block.setOrigin(0, 0.5);
+      block.setVisible(false); // Start invisible
+      pixelBlocks.push(block);
+      barContainer.add(block);
+    }
+
+    // Loading dots animation
+    const dots = [".", "..", "..."];
+    let dotIndex = 0;
+    
+    this.time.addEvent({
+      delay: 500,
+      callback: () => {
+        subtitleText.setText(`Loading${dots[dotIndex]}`);
+        dotIndex = (dotIndex + 1) % dots.length;
+      },
+      loop: true
+    });
 
     //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
     this.load.on("progress", (progress: number) => {
-      //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
-      bar.width = 4 + 460 * progress;
+      // Show pixel blocks based on progress
+      const blocksToShow = Math.floor(totalBlocks * progress);
+      
+      for (let i = 0; i < totalBlocks; i++) {
+        if (i < blocksToShow) {
+          pixelBlocks[i].setVisible(true);
+        } else {
+          pixelBlocks[i].setVisible(false);
+        }
+      }
     });
   }
 

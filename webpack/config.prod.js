@@ -80,7 +80,8 @@ module.exports = {
                 { from: 'public/assets', to: 'assets' },
                 { from: 'public/favicon', to: 'favicon' },
                 { from: 'public/style.css', to: 'style.css' },
-                { from: 'public/logo.png', to: 'logo.png' }
+                { from: 'public/logo.png', to: 'logo.png' },
+                { from: 'public/og-image.png', to: 'og-image.png' }
             ],
         }),
     ]
