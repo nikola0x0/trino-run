@@ -10,18 +10,18 @@ export class Preloader extends Scene {
     // Set monochrome background color to match game style
     this.cameras.main.setBackgroundColor("#f0f0f0");
 
-    // Game title text in pixel style
+    // Game title text in pixel style using PixelifySans font
     const titleText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, "TRINO RUN", {
-      fontFamily: "monospace, Arial",
+      fontFamily: "PixelifySans, monospace, Arial",
       fontSize: "48px",
       color: "#000000",
       fontStyle: "bold"
     });
     titleText.setOrigin(0.5);
 
-    // Subtitle text
+    // Subtitle text using PixelifySans font
     const subtitleText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, "Loading...", {
-      fontFamily: "monospace, Arial", 
+      fontFamily: "PixelifySans, monospace, Arial", 
       fontSize: "20px",
       color: "#666666"
     });
