@@ -85,6 +85,14 @@ export class Preloader extends Scene {
       frameWidth: 24,
       frameHeight: 24,
     });
+
+    // Load sound effects
+    this.load.audio("bgm", "sounds/bgm.mp3");
+    this.load.audio("jump", "sounds/jump.wav");
+    this.load.audio("die", "sounds/die.wav");
+    this.load.audio("multiplier", "sounds/multiplier.wav");
+    this.load.audio("swap", "sounds/swap.wav");
+    this.load.audio("switch-lane", "sounds/switch-lane.wav");
   }
 
   create() {

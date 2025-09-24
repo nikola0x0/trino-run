@@ -1,165 +1,155 @@
-# Phaser Webpack TypeScript Template
+# 🦖 Trino Run
 
-This is a Phaser 3 project template that uses webpack for bundling. It supports hot-reloading for quick development workflow, includes TypeScript support and scripts to generate production-ready builds.
+**A retro endless runner where you morph between three forms to survive**
 
-**[This Template is also available as a JavaScript version.](https://github.com/phaserjs/template-webpack)**
+_Submission for Ancient8 Vibe Coding - AI Dev Playground - Game #2: Dino Swords_
 
-### Versions
+---
 
-This template has been updated for:
+## 🎮 Game Overview
 
-- [Phaser 3.90.0](https://github.com/phaserjs/phaser)
-- [Webpack 5.99.6](https://github.com/webpack/webpack)
-- [TypeScript 5.4.5](https://github.com/microsoft/TypeScript)
+Trino Run is a browser-based endless runner inspired by the Chrome Dino game with a unique twist: **triple form morphing**. Navigate through three distinct lanes by transforming between a Dino, Eagle, and Mole, each with unique abilities and controls.
 
-![screenshot](screenshot.png)
+### 🎯 Core Gameplay
 
-## Requirements
+- **Dino Form**: Run on the ground, jump over cacti
+- **Eagle Form**: Fly through the sky, dodge jets
+- **Mole Form**: Dig underground through three sub-lanes, avoid rocks
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+## 🕹️ Controls
 
-## Available Commands
+### Global Controls
 
-| Command               | Description                                                                                              |
-| --------------------- | -------------------------------------------------------------------------------------------------------- |
-| `npm install`         | Install project dependencies                                                                             |
-| `npm run dev`         | Launch a development web server                                                                          |
-| `npm run build`       | Create a production build in the `dist` folder                                                           |
-| `npm run dev-nolog`   | Launch a development web server without sending anonymous data (see "About log.js" below)                |
-| `npm run build-nolog` | Create a production build in the `dist` folder without sending anonymous data (see "About log.js" below) |
+- **← / → Arrow Keys**: Switch between forms (Dino ↔ Eagle ↔ Mole)
 
-## Writing Code
+### Form-Specific Controls
 
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development server by running `npm run dev`.
+- **Dino**: `SPACE` to jump
+- **Eagle**: `↑/↓` to move vertically within sky lane
+- **Mole**: `↑/↓` to switch between underground lanes
 
-The local development server runs on `http://localhost:8080` by default. Please see the webpack documentation if you wish to change this, or add SSL support.
+## ✨ Key Features
 
-Once the server is running you can edit any of the files in the `src` folder. Webpack will automatically recompile your code and then reload the browser.
+- **🔄 Dynamic Form Switching**: Seamless morphing with visual effects and cooldowns
+- **📊 Multiplier System**: Build score multipliers by chaining form swaps
+- **⚡ Progressive Difficulty**: Speed increases every 4 seconds for escalating challenge
+- **🎨 Retro Pixel Art**: Clean, colorful sprite work with smooth animations
+- **🎵 Visual Feedback**: Screen shake, particle effects, and dynamic UI elements
+- **💾 Smart Obstacle Patterns**: AI-generated obstacle formations that force strategic form switching
 
-## Template Project Structure
+## 🛠️ Technical Implementation
 
-We have provided a default project structure to get you started. This is as follows:
+- **Engine**: Phaser 3 with TypeScript
+- **Physics**: Arcade Physics with optimized collision detection
+- **Architecture**: Modular design with separate managers for obstacles, UI, and game state
+- **Performance**: Object pooling for obstacles, efficient sprite management
+- **Build System**: Webpack with hot reload for development
 
-| Path                | Description                                           |
-| ------------------- | ----------------------------------------------------- |
-| `public/index.html` | A basic HTML page to contain the game.                |
-| `public/assets`     | Game sprites, audio, etc. Served directly at runtime. |
-| `public/style.css`  | Global layout styles.                                 |
-| `src/main.ts`       | Application bootstrap.                                |
-| `src/game`          | Folder containing the game code.                      |
-| `src/game/main.ts`  | Game entry point: configures and starts the game.     |
-| `src/game/scenes`   | Folder with all Phaser game scenes.                   |
+## 🚀 Getting Started
 
-## Handling Assets
+### Prerequisites
 
-Webpack supports loading assets via JavaScript module `import` statements.
+- Node.js (v14 or higher)
+- npm or yarn
 
-This template provides support for both embedding assets and also loading them from a static folder. To embed an asset, you can import it at the top of the JavaScript file you are using it in:
-
-```js
-import logoImg from "./assets/logo.png";
-```
-
-To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
-
-```js
-preload();
-{
-  //  This is an example of an imported bundled image.
-  //  Remember to import it at the top of this file
-  this.load.image("logo", logoImg);
-
-  //  This is an example of loading a static image
-  //  from the public/assets folder:
-  this.load.image("background", "assets/bg.png");
-}
-```
-
-When you issue the `npm run build` command, all static assets are automatically copied to the `dist/assets` folder.
-
-## Deploying to Production
-
-After you run the `npm run build` command, your code will be built into a single bundle and saved to the `dist` folder, along with any other assets your project imported, or stored in the public assets folder.
-
-In order to deploy your game, you will need to upload _all_ of the contents of the `dist` folder to a public facing web server.
-
-## Customizing the Template
-
-### Babel
-
-You can write modern ES6+ JavaScript and Babel will transpile it to a version of JavaScript that you want your project to support. The targeted browsers are set in the `.babelrc` file and the default currently targets all browsers with total usage over "0.25%" but excludes IE11 and Opera Mini.
-
-```
-"browsers": [
- ">0.25%",
- "not ie 11",
- "not op_mini all"
-]
-```
-
-### Webpack
-
-If you want to customize your build, such as adding a new webpack loader or plugin (i.e. for loading CSS or fonts), you can modify the `webpack/config.*.js` file for cross-project changes, or you can modify and/or create new configuration files and target them in specific npm tasks inside of `package.json`. Please see the [Webpack documentation](https://webpack.js.org/) for more information.
-
-## About log.js
-
-If you inspect our node scripts you will see there is a file called `log.js`. This file makes a single silent API call to a domain called `gryzor.co`. This domain is owned by Phaser Studio Inc. The domain name is a homage to one of our favorite retro games.
-
-We send the following 3 pieces of data to this API: The name of the template being used (vue, react, etc). If the build was 'dev' or 'prod' and finally the version of Phaser being used.
-
-At no point is any personal data collected or sent. We don't know about your project files, device, browser or anything else. Feel free to inspect the `log.js` file to confirm this.
-
-Why do we do this? Because being open source means we have no visible metrics about which of our templates are being used. We work hard to maintain a large and diverse set of templates for Phaser developers and this is our small anonymous way to determine if that work is actually paying off, or not. In short, it helps us ensure we're building the tools for you.
-
-However, if you don't want to send any data, you can use these commands instead:
-
-Dev:
+### Installation & Running
 
 ```bash
-npm run dev-nolog
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
 ```
 
-Build:
+Visit `http://localhost:8080` to play the game.
 
-```bash
-npm run build-nolog
+## 📁 Project Structure
+
+```
+trino-run/
+├── src/
+│   └── game/
+│       ├── scenes/          # Game scenes (Boot, Menu, Game, GameOver)
+│       ├── entities/        # Game objects (ObstacleManager, etc.)
+│       └── main.ts         # Game configuration
+├── public/
+│   ├── assets/             # Game sprites and assets
+│   └── favicon/           # Favicon files
+├── index.html             # Main HTML file
+└── package.json          # Dependencies and scripts
 ```
 
-Or, to disable the log entirely, simply delete the file `log.js` and remove the call to it in the `scripts` section of `package.json`:
+## 🎪 Game Mechanics Deep Dive
 
-Before:
+### Scoring System
 
-```json
-"scripts": {
-    "dev": "node log.js dev & dev-template-script",
-    "build": "node log.js build & build-template-script"
-},
-```
+- **Distance Points**: Continuous scoring based on survival time
+- **Multiplier Bonus**: Increases with each form swap (unlimited scaling!)
+- **Gauge System**: Swap energy that depletes over time, adds strategic depth
 
-After:
+### Obstacle Patterns
 
-```json
-"scripts": {
-    "dev": "dev-template-script",
-    "build": "build-template-script"
-},
-```
+- **Single Lane**: Basic obstacles in one lane
+- **Formation Patterns**: Structured obstacle rows and walls
+- **Chaos Mode**: Multi-lane simultaneous spawning
+- **Underground Forced**: Blocks 2 of 3 mole lanes, forcing specific positioning
 
-Either of these will stop `log.js` from running. If you do decide to do this, please could you at least join our Discord and tell us which template you're using! Or send us a quick email. Either will be super-helpful, thank you.
+### Visual Polish
 
-## Join the Phaser Community!
+- **Dynamic Colors**: Multiplier-based color schemes (Green → Yellow → Orange → Red → Purple → Rainbow)
+- **Screen Effects**: Increasing screen shake intensity with higher multipliers
+- **Smooth Animations**: Form-switching effects with particle systems
+- **Responsive UI**: Real-time updates for score, multiplier, and form selection
 
-We love to see what developers like you create with Phaser! It really motivates us to keep improving. So please join our community and show-off your work 😄
+## 🏆 Bounty Submission Details
 
-**Visit:** The [Phaser website](https://phaser.io) and follow on [Phaser Twitter](https://twitter.com/phaser_)<br />
-**Play:** Some of the amazing games [#madewithphaser](https://twitter.com/search?q=%23madewithphaser&src=typed_query&f=live)<br />
-**Learn:** [API Docs](https://newdocs.phaser.io), [Support Forum](https://phaser.discourse.group/) and [StackOverflow](https://stackoverflow.com/questions/tagged/phaser-framework)<br />
-**Discord:** Join us on [Discord](https://discord.gg/phaser)<br />
-**Code:** 2000+ [Examples](https://labs.phaser.io)<br />
-**Read:** The [Phaser World](https://phaser.io/community/newsletter) Newsletter<br />
+**Category**: Game #2: Dino Swords  
+**Competition**: Ancient8 Vibe Coding - AI Dev Playground
 
-Created by [Phaser Studio](mailto:support@phaser.io). Powered by coffee, anime, pixels and love.
+### 🤖 AI-Human Collaboration
 
-The Phaser logo and characters are &copy; 2011 - 2025 Phaser Studio Inc.
+This game showcases the power of **vibing with AI** - a seamless creative partnership where:
 
-All rights reserved.
+- **Human creativity** drove the vision and gameplay concepts
+- **Claude's coding skills** brought ideas to life instantly
+- **Iterative feedback** refined mechanics in real-time
+- **Problem-solving together** overcame technical challenges
+
+The result: A polished game created through natural conversation and collaborative iteration!
+
+### Key Deliverables ✅
+
+- ✅ Fully playable endless runner
+- ✅ Three distinct player forms with unique mechanics
+- ✅ Progressive difficulty system
+- ✅ Retro-style pixel art and animations
+- ✅ Score system with high score tracking
+- ✅ Professional code structure and documentation
+- ✅ Optimized performance and smooth gameplay
+
+## 🎨 Art & Assets
+
+All sprites and visual assets are carefully crafted for a cohesive retro gaming experience:
+
+- **Character Sprites**: Animated Dino, Eagle, and Mole with proper scaling
+- **Obstacle Variety**: Cacti, rocks, jets, and underground hazards
+- **Environment**: Tiered lane system with distinct visual themes
+- **Effects**: Form-switching animations and particle systems
+
+## 🚧 Future Enhancements
+
+- Sound effects and background music
+- Power-ups and special abilities
+- Leaderboard integration
+- Mobile touch controls
+- Additional forms and obstacles
+
+---
+
+**Made with ❤️ for the Ancient8 Vibe Coding Challenge**
+
+_Ready to run, fly, and dig your way to victory?_ 🏃‍♂️✈️⛏️
